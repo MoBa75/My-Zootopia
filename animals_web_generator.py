@@ -7,32 +7,33 @@ def load_data(file_path):
 
 
 def get_animals_info(data):
-    animals_lst = []
+    animals_lst = {}
     for animal in data:
-        animals_info = {}
         for key, val in animal.items():
             if key == "name":
-                animals_info["Name"] = val
+                animals_lst[val] = {}
+                name = val
             if key == "locations":
-                animals_info["Locations"] = val[0]
+                animals_lst[name]["Locations"] = val[0]
             if key == "characteristics":
                 if val.get("diet", None):
-                    animals_info["Diet"] = val["diet"]
+                    animals_lst[name]["Diet"] = val["diet"]
                 if val.get("type", None):
-                    animals_info["Type"] = val["type"]
-        animals_lst.append(animals_info)
+                    animals_lst[name]["Type"] = val["type"]
     return animals_lst
 
 
-def conect_animal_info(data):
+def connect_animal_info(data):
     complete_animals_info = ''
-    for animal in data:
-        if "Name" in animal:
-            complete_animals_info += '<li class="cards__item">\n'
-            for key, val in animal.items():
-                complete_animals_info += f"{key}: {val}<br/>\n"
-        complete_animals_info += "</li>\n"
-    return complete_animals_info
+    for animal, infos in data.items():
+        complete_animals_info += (f'<li class="cards__item">'
+                                    f'\n  <div class="card__title">{animal}</div>'
+                                    f'\n<p class="card__text">\n')
+        for key, val in infos.items():
+            complete_animals_info += f"<strong>{key.capitalize()}</strong>: {val}<br/>\n"
+        complete_animals_info += " </p>\n</li>\n"
+    # corrects the formatting error happening for ' symbol
+    return complete_animals_info.replace("’", "'")
 
 
 def read_html_file(html_data):
@@ -49,12 +50,15 @@ def write_html_file(new_text):
         file.write(new_text)
 
 
-animals_data = load_data('animals_data.json')
-info_lst = get_animals_info(animals_data)
-animal_str = conect_animal_info(info_lst)
-html_data = read_html_file('animals_template.html')
-chanced_html = chance_html_content(html_data, animal_str)
-write_html_file(chanced_html)
+def main():
+    animals_data = load_data('animals_data.json')
+    info_lst = get_animals_info(animals_data)
+    animal_str = connect_animal_info(info_lst)
+    html_data = read_html_file('animals_template.html')
+    chanced_html = chance_html_content(html_data, animal_str)
+    write_html_file(chanced_html)
 
 
+if __name__ == "__main__":
+    main()
 
