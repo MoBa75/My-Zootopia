@@ -28,14 +28,17 @@ def conect_animal_info(data):
     complete_animals_info = ''
     for animal in data:
         if "Name" in animal:
+            complete_animals_info += '<li class="cards__item">\n'
             for key, val in animal.items():
-                complete_animals_info += f"{key}: {val}\n"
-        complete_animals_info += "\n"
+                complete_animals_info += f"{key}: {val}<br/>\n"
+        complete_animals_info += "</li>\n"
     return complete_animals_info
+
 
 def read_html_file(html_data):
     with open(html_data, 'r', encoding='utf-8') as file:
         return file.read()
+
 
 def chance_html_content(html_content, str_input):
     return html_content.replace('__REPLACE_ANIMALS_INFO__', str_input)
