@@ -1,5 +1,6 @@
 import json
 
+
 def load_data(file_path):
     """ Loads a JSON file """
     with open(file_path, 'r', encoding='utf-8') as handle:
@@ -36,25 +37,11 @@ def add_space_before_uppercase(word):
     return new_val
 
 
-"""
-<li class="cards__item">
-  <div class="card__title">English Foxhound</div>
-  <div class="card__text">
-    <ul>
-      <li><strong>Diet:</strong> Carnivore</li>
-      <li><strong>Location:</strong> North-America and Canada</li>
-      <li><strong>Type:</strong> mammal</li>
-    </ul>
-  </div>
-</li>
-"""
-
-
 def serialize_animal(animal, infos):
     complete_animals_info = (f'<li class="cards__item">'
-                              f'\n  <div class="card__title">{animal}</div>'
-                              f'\n<div class="card__text">'
-                              f' \n<ul>')
+                             f'\n  <div class="card__title">{animal}</div>'
+                             f'\n<div class="card__text">'
+                             f' \n<ul>')
     for key, val in infos.items():
         if key == "Color":
             complete_animals_info += (f"<li><strong>{key.capitalize()}</strong>: "
@@ -65,10 +52,11 @@ def serialize_animal(animal, infos):
     return complete_animals_info
 
 
-def connect_animal_info(data):
+def connect_animal_info(info_lst, user_input):
     complete_animals_info = ''
-    for animal, infos in data.items():
-        complete_animals_info += serialize_animal(animal, infos)
+    for animal, infos in info_lst.items():
+        if user_input.capitalize() in infos.get("Skin Type", "") or user_input in 'all':
+            complete_animals_info += serialize_animal(animal, infos)
     # corrects the formatting error happening for ' symbol
     return complete_animals_info.replace("’", "'")
 
@@ -87,11 +75,37 @@ def write_html_file(new_text):
         file.write(new_text)
 
 
+def get_skin_types(animal_info):
+    skin_types = []
+    for animal, characteristics in animal_info.items():
+        if characteristics['Skin Type'] in skin_types:
+            continue
+        skin_types.append(characteristics['Skin Type'])
+    return skin_types
+
+
+def get_user_input(data):
+    print("Would you like to filter the animals by their skin type? ")
+    while True:
+        user_input = input("Please enter 'y' for yes or 'n' for no: ")
+        if user_input.lower() == 'n':
+            return 'all'
+        if user_input.lower() == 'y':
+            print('Which skin type do you want to choose?')
+            while True:
+                user_input = input(f'Please enter one of these skin types: "{", ".join(data)}": ')
+                if user_input.capitalize() in data:
+                    return user_input
+                print("ERROR")
+        print("ERROR")
+
+
 def main():
     animals_data = load_data('animals_data.json')
-    info_lst = get_animals_info(animals_data)
-    print(info_lst)
-    animal_str = connect_animal_info(info_lst)
+    animal_info = get_animals_info(animals_data)
+    skin_type_choice = get_skin_types(animal_info)
+    user_input = get_user_input(skin_type_choice)
+    animal_str = connect_animal_info(animal_info, user_input)
     html_data = read_html_file('animals_template.html')
     chanced_html = chance_html_content(html_data, animal_str)
     write_html_file(chanced_html)
@@ -99,4 +113,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
