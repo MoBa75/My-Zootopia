@@ -36,17 +36,32 @@ def add_space_before_uppercase(word):
     return new_val
 
 
+"""
+<li class="cards__item">
+  <div class="card__title">English Foxhound</div>
+  <div class="card__text">
+    <ul>
+      <li><strong>Diet:</strong> Carnivore</li>
+      <li><strong>Location:</strong> North-America and Canada</li>
+      <li><strong>Type:</strong> mammal</li>
+    </ul>
+  </div>
+</li>
+"""
+
+
 def serialize_animal(animal, infos):
     complete_animals_info = (f'<li class="cards__item">'
                               f'\n  <div class="card__title">{animal}</div>'
-                              f'\n<p class="card__text">\n')
+                              f'\n<div class="card__text">'
+                              f' \n<ul>')
     for key, val in infos.items():
         if key == "Color":
-            complete_animals_info += (f"<strong>{key.capitalize()}</strong>: "
-                                      f"{add_space_before_uppercase(val)}<br/>\n")
+            complete_animals_info += (f"<li><strong>{key.capitalize()}</strong>: "
+                                      f"{add_space_before_uppercase(val)}</li>\n")
         else:
-            complete_animals_info += f"<strong>{key.capitalize()}</strong>: {val}<br/>\n"
-    complete_animals_info += " </p>\n</li>\n"
+            complete_animals_info += f"<li><strong>{key.capitalize()}</strong>: {val}</li>\n"
+    complete_animals_info += "  </ul>\n </div>\n</li>\n"
     return complete_animals_info
 
 
