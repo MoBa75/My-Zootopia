@@ -1,11 +1,8 @@
-
 def add_space_before_uppercase(word):
     """
-    Inserts a space before each capital letter of the transmitted
-    word, thereby dividing the word into several words
-    :param word: A word that consists of several words
-                 joined together as a string
-    :return: multiple word as string
+    Separates coherent words of an entry with spaces.
+    :param word: dictionary entry as string
+    :return: separated words as string
     """
     new_word = ""
     for letter in word:
@@ -17,13 +14,10 @@ def add_space_before_uppercase(word):
 
 def serialize_animal(animal, infos):
     """
-    Creates the html text for later use according
-    to the previous selection criteria
-    :param animal: corresponding animal according
-                   to the selected criteria as string
-    :param infos:  corresponding information about the animal
-                   according to the selected criteria as string
-    :return: All necessary content in html form as string
+    Creates the html text for a given animal dictionary entry
+    :param animal: animal name as string
+    :param infos:  animal information as string
+    :return: content in html form as string
     """
     complete_animals_info = (f'<li class="cards__item">'
                              f'\n  <div class="card__title">{animal}</div>'
@@ -42,7 +36,7 @@ def serialize_animal(animal, infos):
 
 def read_html_file(html_data):
     """
-    Gets all contents of the html file for further use
+    Reads a html file
     :param html_data: html file
     :return: complete content of the html file as string
     """
@@ -62,7 +56,7 @@ def chance_html_content(html_content, str_input):
 
 def write_html_file(new_text):
     """
-    regenerated html content as string
+    Writs a string to a html file
     :param new_text: regenerated html content as string
     """
     with open('animals.html', 'w') as file:

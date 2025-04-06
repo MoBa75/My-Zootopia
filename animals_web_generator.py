@@ -18,7 +18,7 @@ def get_animals_info(animals_data):
     :param animals_data: overall database as dictionary
     :return: desired data as dictionary
     """
-    #extrahiert Tier Daten aus den Gesamtdaten
+    # extrahiert Tier Daten aus den Gesamtdaten
     animal_info = {}
     for animal in animals_data:
         for category, detail in animal.items():
@@ -48,7 +48,7 @@ def connect_animal_info(animal_info, user_input):
     :return: complete data set of the animals to
              be displayed in html form as a string
     """
-    #Filter und Auswahl des User wird hier erstellt.
+    # Filter und Auswahl des User wird hier erstellt.
     complete_animals_info = ''
     for animal, infos in animal_info.items():
         if user_input.capitalize() in infos.get("Skin Type", "") or user_input in 'all':
@@ -60,8 +60,7 @@ def connect_animal_info(animal_info, user_input):
 def get_skin_types(animal_info):
     """
     Extracts all skin types from the database.
-    :param animal_info: database with necessary
-                        animal info as dictionary
+    :param animal_info: database with animal info as dictionary
     :return: all skin types as list
     """
     skin_types = []
@@ -75,7 +74,7 @@ def get_skin_types(animal_info):
 def get_user_input(skin_types):
     """
     User query whether database should be filtered by
-    skin type and selection of skin type by user
+    skin type and selection of skin type
     :param skin_types: for selection by user as list
     :return: user selection as string
     """
@@ -91,8 +90,8 @@ def get_user_input(skin_types):
                                    f'"{", ".join(skin_types)}": ')
                 if user_input.capitalize() in skin_types:
                     return user_input
-                print("ERROR")
-        print("ERROR")
+                print(f"ERROR! '{user_input}' is not a valid skin type!")
+        print(f"ERROR! '{user_input}' is not a valid answer!")
 
 
 def main():
